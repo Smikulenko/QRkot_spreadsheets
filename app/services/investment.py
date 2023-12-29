@@ -20,8 +20,6 @@ async def donation_process(
                                                      source_db)
         session.add(obj_in)
         session.add(source_db)
-    await session.commit()
-    await session.refresh(obj_in)
     return obj_in
 
 

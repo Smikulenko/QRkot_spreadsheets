@@ -5,6 +5,10 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.charity_project import charity_project_crud
+from app.core.constant import (AMOUNT, ACTIVE,
+                               INVESTMENT,
+                               PROJECT_EXISTS,
+                               CHECK_NAME)
 from app.models import CharityProject
 
 
@@ -16,7 +20,7 @@ async def check_name(
     if project_id:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail='Проект с таким именем уже существует!'
+            detail=CHECK_NAME
         )
 
 
@@ -31,7 +35,7 @@ async def check_project_exists(
     if not charity_project:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
-            detail='Проект не найден'
+            detail=PROJECT_EXISTS
         )
     return charity_project
 
@@ -43,7 +47,7 @@ async def project_active(
     if charity_project.fully_invested:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail='Закрытый проект нельзя редактировать!'
+            detail=ACTIVE
         )
     return charity_project
 
@@ -55,7 +59,7 @@ async def project_investment(
     if charity_project.invested_amount:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail='В проект были внесены средства, не подлежит удалению!'
+            detail=INVESTMENT
         )
 
 
@@ -67,5 +71,5 @@ async def updated_amount(
     if obj_in_full_amount < charity_project_inv_amount:
         raise HTTPException(
             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail='Нельзя установить требуемую сумму меньше уже вложенной'
+            detail=AMOUNT
         )

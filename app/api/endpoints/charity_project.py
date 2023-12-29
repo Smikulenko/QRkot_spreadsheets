@@ -33,7 +33,7 @@ async def create_new_charity_project(
     session: AsyncSession = Depends(get_async_session),
 ):
     await check_name(project.name, session)
-    new_project = await charity_project_crud.create_project(project, session)
+    new_project = await charity_project_crud.create(project, session)
     new_project = await donation_process(new_project, Donation, session)
     await session.commit()
     await session.refresh(new_project)
@@ -59,6 +59,7 @@ async def partially_update_charity_project(
             project, obj_in, session
         )
         return project
+
     await updated_amount(obj_in.full_amount, project.invested_amount,
                          session)
     charity_project = await charity_project_crud.update_project(project,

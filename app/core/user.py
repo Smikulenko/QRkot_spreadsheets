@@ -14,13 +14,10 @@ from app.core.config import settings
 from app.core.db import get_async_session
 from app.models.user import User
 from app.schemas.user import UserCreate
-
-
-LIFETIME = 3600
-LENGTH = 3
-USER_EXIST = 'Пользователь {email} зарегистрирован.'
-PASSWORD_LENGTH = 'Password should be at least 3 characters'
-PASSWORD_EMAIL = 'Password should not contain e-mail'
+from app.core.constant import (LIFETIME, LENGTH,
+                               USER_EXIST,
+                               PASSWORD_LENGTH,
+                               PASSWORD_EMAIL,)
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):

@@ -12,18 +12,6 @@ from app.schemas.charity_project import (CharityProjectCreate,
 
 class CRUDCharityProject(CRUDBase):
 
-    async def create_project(
-            self,
-            obj_in: CharityProjectCreate,
-            session: AsyncSession,
-    ) -> CharityProject:
-        obj_in_data = obj_in.dict()
-        db_obj = self.model(**obj_in_data)
-        session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
-        return db_obj
-
     async def update_project(
         self,
         db_obj: CharityProject,
@@ -36,8 +24,6 @@ class CRUDCharityProject(CRUDBase):
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
         session.add(db_obj)
-        await session.commit()
-        await session.refresh(db_obj)
         return db_obj
 
     async def remove_project(
